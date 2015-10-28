@@ -1,0 +1,3 @@
+web: rackup -p 80 -E production -s puma
+retrop_monitor: ruby bin/retrop_monitor.rb
+

@@ -1,0 +1,7 @@
+Bluepill.application('gemmy-monitor', log_file: '/var/log/gemmy/bluepill-monitor.log') do |app|
+  app.process('gemmy-monitor') do |process|
+    process.start_command = "su - datys -c 'cd /var/www/gemmy/; rvmsudo bundle exec ruby bin/bucket_monitor.rb'"
+    process.pid_file = '/var/run/gemmy/monitor.pid'
+    process.daemonize = true
+  end
+end

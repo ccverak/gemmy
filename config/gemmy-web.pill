@@ -1,0 +1,22 @@
+Bluepill.application('gemmy-web', log_file: '/var/log/gemmy/bluepill-web.log') do |app|
+  app.working_dir = '/var/www/gemmy'
+  app.uid = 'www'
+  app.gid = 'rvm'
+
+  app.process('unicorn') do |process|
+    process.start_command = 'bundle exec unicorn -E production -c /var/www/gemmy/config/unicorn.rb /var/www/gemmy/config.ru -D'
+    process.stop_command = 'start-stop-daemon --signal QUIT --stop --pidfile /var/run/gemmy/web.pid'
+    process.restart_command = 'start-stop-daemon --signal USR2 --stop --pidfile /var/run/gemmy/web.pid'
+    process.pid_file = '/var/run/gemmy/web.pid'
+    process.start_grace_time = 30.seconds
+    process.stop_grace_time = 30.seconds
+    process.restart_grace_time = 30.seconds
+
+    process.monitor_children do |child_process|
+      child_process.stop_command = "kill -QUIT {{PID}}"
+
+      child_process.checks :mem_usage, :every => 30.seconds, :below => 200.megabytes, :times => [3,4], :fires => :stop
+      child_process.checks :cpu_usage, :every => 30.seconds, :below => 40, :times => [3,4], :fires => :stop
+    end
+  end
+end
