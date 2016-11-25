@@ -17,7 +17,7 @@ Gemmy is a server atop Geminabox which allows simple gem indexing and batch inde
 *The only objective of this project is to have some sample source, but who knows it might be useful in the feature.*
 
 ## Test coverage
-Believe or not o lost the tests from this project, this is a deployment copy.
+Believe or not I lost the tests from this project, this is a deployment copy.
 
 ## Licence
 MIT. 2013. Do what ever you want with this :-)
